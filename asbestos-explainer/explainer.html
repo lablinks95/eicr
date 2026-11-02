@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Asbestos Survey Explainer</title>
+<style>
+:root{
+  --navy:#0B1F3A; --navy-2:#132D52; --navy-3:#1C3D6B;
+  --orange:#FF7A1A; --orange-2:#FFA25C; --white:#F5F7FA; --muted:#A9B8CF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy)}
+body{font-family:"Inter Display","Inter",sans-serif;color:var(--white);position:relative}
+.stage{position:absolute;inset:0;overflow:hidden;
+  background:radial-gradient(1200px 1200px at 85% 10%, var(--navy-3) 0%, var(--navy) 60%)}
+/* background decor */
+.grid{position:absolute;inset:-200px;opacity:.07;
+  background-image:linear-gradient(var(--white) 2px,transparent 2px),linear-gradient(90deg,var(--white) 2px,transparent 2px);
+  background-size:120px 120px;animation:drift 30s linear both}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-120px,-240px)}}
+.stripes{position:absolute;right:-220px;top:220px;width:700px;height:120px;transform:rotate(-35deg);
+  background:repeating-linear-gradient(90deg,var(--orange) 0 40px,transparent 40px 80px);opacity:.18;
+  animation:stripes 30s linear both}
+@keyframes stripes{from{background-position:0 0}to{background-position:-960px 0}}
+.brandbar{position:absolute;left:0;top:0;height:14px;background:var(--orange);width:100%;
+  transform-origin:left;animation:grow 0.8s cubic-bezier(.7,0,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.progress{position:absolute;left:80px;right:80px;bottom:90px;height:8px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
+.progress i{position:absolute;inset:0;background:var(--orange);transform-origin:left;animation:prog 30s linear both}
+@keyframes prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.foot{position:absolute;left:80px;bottom:120px;font:600 30px "Inter";letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+
+/* scenes */
+.scene{position:absolute;inset:0;padding:0 90px;display:flex;flex-direction:column;justify-content:center;opacity:0}
+.tag{display:inline-block;align-self:flex-start;background:var(--orange);color:var(--navy);
+  font:800 34px "Inter";letter-spacing:.18em;padding:16px 28px;border-radius:8px;text-transform:uppercase}
+.h1{font-weight:900;font-size:150px;line-height:1.0;letter-spacing:-.03em}
+.h2{font-weight:800;font-size:104px;line-height:1.04;letter-spacing:-.025em}
+.h3{font-weight:700;font-size:62px;line-height:1.15;letter-spacing:-.01em}
+.p{font:500 50px/1.3 "Inter";color:var(--muted)}
+.o{color:var(--orange)}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.w>span{display:inline-block;animation:rise .7s cubic-bezier(.2,.9,.2,1) both}
+@keyframes rise{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeUp{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes slideL{from{transform:translateX(-120%)}to{transform:none}}
+@keyframes slideR{from{transform:translateX(120%)}to{transform:none}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes sceneIn{from{opacity:0}to{opacity:1}}
+@keyframes sceneOut{from{opacity:1;transform:none;filter:blur(0)}to{opacity:0;transform:scale(1.06);filter:blur(10px)}}
+@keyframes lineGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,122,26,.6)}50%{transform:scale(1.04);box-shadow:0 0 0 40px rgba(255,122,26,0)}}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes blob{from{transform:scale(0) }to{transform:scale(1)}}
+
+.blob{position:absolute;border-radius:50%;background:var(--orange)}
+.chips{display:flex;flex-wrap:wrap;gap:24px;margin-top:50px}
+.chip{font:700 46px "Inter";padding:22px 36px;border-radius:999px;border:4px solid var(--orange);color:var(--white);background:rgba(255,122,26,.08)}
+.card{background:var(--navy-2);border-left:16px solid var(--orange);border-radius:20px;padding:50px 54px;margin-top:44px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.card .k{font:800 34px "Inter";letter-spacing:.16em;color:var(--orange);text-transform:uppercase}
+.card .t{font-weight:800;font-size:68px;line-height:1.08;margin-top:14px}
+.card .d{font:500 42px/1.3 "Inter";color:var(--muted);margin-top:18px}
+.steps{position:relative;margin-top:70px;padding-left:40px}
+.steps .rail{position:absolute;left:79px;top:60px;bottom:60px;width:8px;background:var(--orange);transform-origin:top}
+.step{display:flex;align-items:center;gap:44px;margin:0 0 70px}
+.num{flex:none;width:86px;height:86px;border-radius:50%;background:var(--orange);color:var(--navy);display:grid;place-items:center;font:900 40px "Inter";position:relative;z-index:1}
+.step .t{font-weight:800;font-size:72px}
+.step .d{font:500 40px/1.25 "Inter";color:var(--muted);margin-top:6px}
+.type{font:700 70px/1.15 "JetBrains Mono",monospace;color:var(--orange);margin-top:50px}
+.type .c{display:inline-block;width:.55em;height:1em;background:var(--orange);vertical-align:-.12em;margin-left:6px}
+.btn{align-self:flex-start;margin-top:80px;background:var(--orange);color:var(--navy);font:900 64px "Inter";padding:40px 64px;border-radius:24px}
+.big{font-weight:900;font-size:400px;line-height:.9;letter-spacing:-.05em;color:var(--orange)}
+.contacts{margin-top:64px;display:flex;flex-direction:column;gap:26px}
+.ct{display:flex;align-items:center;gap:28px;font:700 46px "Inter";letter-spacing:-.01em}
+.ct svg{flex:none;width:64px;height:64px}
+@keyframes slideInR{from{transform:translateX(80px);opacity:0}to{transform:none;opacity:1}}
+.icon{width:180px;height:180px;margin-bottom:50px}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid"></div>
+  <div class="stripes"></div>
+  <div class="brandbar"></div>
+  <div id="scenes"></div>
+  <div class="foot">Asbestos Surveys · Explained</div>
+  <div class="progress"><i></i></div>
+</div>
+<script>
+const SC = document.getElementById('scenes');
+const A = (name, start, dur, ease='cubic-bezier(.2,.9,.2,1)', extra='both') =>
+  `${name} ${dur}s ${ease} ${start}s ${extra}`;
+
+// word-by-word rising reveal; returns html and end time
+function words(text, start, stagger=0.09, cls=''){
+  let t = start;
+  const html = text.split(' ').map(w=>{
+    const orange = w.startsWith('*');
+    w = w.replace(/^\*/,'');
+    const s = `<span class="w"><span class="${orange?'o':''}" style="animation-delay:${t.toFixed(2)}s">${w}</span></span>`;
+    t += stagger; return s;
+  }).join(' ');
+  return html;
+}
+function scene(start, end, inner, extraStyle=''){
+  const el = document.createElement('div');
+  el.className='scene';
+  el.style.cssText = `animation:${A('sceneIn',start,0.25,'linear')}, ${A('sceneOut',end-0.45,0.45,'cubic-bezier(.6,0,.8,.2)','forwards')};${extraStyle}`;
+  el.innerHTML = inner; SC.appendChild(el); return el;
+}
+const st = (anim)=>`style="animation:${anim}"`;
+
+// ---------- Scene 1: hook (0 – 4.6)
+scene(0, 4.6, `
+  <div class="blob" style="width:900px;height:900px;right:-380px;top:-300px;opacity:.95;animation:${A('blob',0.1,1.1,'cubic-bezier(.2,1.2,.3,1)')}"></div>
+  <div class="blob" style="width:260px;height:260px;left:-90px;bottom:300px;background:transparent;border:14px solid var(--orange);animation:${A('blob',0.6,0.9,'cubic-bezier(.2,1.2,.3,1)')}"></div>
+  <div style="position:relative">
+    <div class="tag" ${st(A('fadeUp',0.3,0.6))}>Asbestos surveys</div>
+    <div class="h1" style="margin-top:50px">${words('Built before',0.6,0.12)}<br>${words('*2000?',0.9)}</div>
+    <div class="p" style="margin-top:50px;font-size:58px;color:var(--white)" >${words('Your building could still contain *asbestos.',1.7,0.08)}</div>
+  </div>`);
+
+// ---------- Scene 2: 1999 + hidden places (4.6 – 10)
+scene(4.6, 10, `
+  <div class="h3" ${st(A('fadeUp',4.8,0.6))}>Banned in the UK in</div>
+  <div class="big" ${st(A('wipe',5.0,0.8,'cubic-bezier(.7,0,.2,1)'))}>1999</div>
+  <div class="h3" style="margin-top:30px">${words('…but still hidden in millions of buildings:',5.9,0.07)}</div>
+  <div class="chips">
+    ${['Ceiling tiles','Pipe lagging','Floor tiles','Roof sheets','Textured coatings','Boiler flues'].map((c,i)=>
+      `<div class="chip" ${st(A('pop',6.8+i*0.22,0.5,'cubic-bezier(.3,1.4,.5,1)'))}>${c}</div>`).join('')}
+  </div>`);
+
+// ---------- Scene 3: two survey types (10 – 16.4)
+scene(10, 16.4, `
+  <div class="tag" ${st(A('fadeUp',10.1,0.5))}>Two survey types</div>
+  <div class="card" ${st(A('slideL',10.6,0.8,'cubic-bezier(.2,1,.3,1)'))}>
+    <div class="k">01 · Management</div>
+    <div class="t">Keeps your building safe day-to-day</div>
+    <div class="d">Locates asbestos that could be disturbed during normal occupation & maintenance.</div>
+  </div>
+  <div class="card" ${st(A('slideR',12.6,0.8,'cubic-bezier(.2,1,.3,1)'))}>
+    <div class="k">02 · Refurbishment & Demolition</div>
+    <div class="t">Required before any building work</div>
+    <div class="d">Intrusive inspection of every area the works will touch.</div>
+  </div>`);
+
+// ---------- Scene 4: how it works (16.4 – 22.4)
+scene(16.4, 21.6, `
+  <div class="h2">${words('How it *works',16.5,0.12)}</div>
+  <div class="steps">
+    <div class="rail" ${st(A('lineGrow',17.2,2.0,'cubic-bezier(.5,0,.3,1)'))}></div>
+    ${[['Inspect','A qualified surveyor checks the property'],
+       ['Sample','Suspect materials analysed by a UKAS-accredited lab'],
+       ['Report','Your asbestos register & clear next steps']].map(([t,d],i)=>`
+      <div class="step">
+        <div class="num" ${st(A('pop',17.2+i*0.9,0.5,'cubic-bezier(.3,1.4,.5,1)'))}>0${i+1}</div>
+        <div ${st(A('fadeUp',17.35+i*0.9,0.6))}><div class="t">${t}</div><div class="d">${d}</div></div>
+      </div>`).join('')}
+  </div>`);
+
+// ---------- Scene 5: the law (22.4 – 26.8)
+const law = 'Control of Asbestos Regulations 2012';
+scene(21.6, 25.4, `
+  <svg class="icon" viewBox="0 0 100 100" ${st(A('pop',21.7,0.6,'cubic-bezier(.3,1.4,.5,1)'))}>
+    <path d="M50 4 L90 20 V48 C90 72 72 90 50 96 C28 90 10 72 10 48 V20 Z" fill="none" stroke="#FF7A1A" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M32 50 L45 63 L69 37" fill="none" stroke="#F5F7FA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="h2">${words("It's the *law.",21.9,0.12)}</div>
+  <div class="type"><span id="typed"></span><span class="c" ${st(`caret 0.8s steps(1) 21.6s 5 both`)}></span></div>
+  <div class="p" style="margin-top:50px" ${st(A('fadeUp',23.9,0.6))}>Non-domestic premises have a legal <b style="color:var(--white)">duty to manage</b> asbestos.</div>`);
+
+// ---------- Scene 6: CTA + contact details (25.4 – 30)
+const contacts = [
+  ['<path d="M50 6a44 44 0 1 0 0 88a44 44 0 1 0 0-88M6 50h88M50 6c-16 14-16 74 0 88M50 6c16 14 16 74 0 88" />','asbestoslondonsurvey.co.uk'],
+  ['<path d="M30 8h12l6 22-9 7c5 11 13 19 24 24l7-9 22 6v12c0 6-5 10-11 10C46 80 20 54 20 19 20 13 24 8 30 8z" />','07707 999369'],
+  ['<path d="M8 22h84v56H8zM8 22l42 32 42-32" />','info@asbestoslondonsurvey.co.uk'],
+];
+scene(25.4, 31, `
+  <div class="blob" style="width:1500px;height:1500px;left:-210px;top:120px;background:var(--navy-2);animation:${A('blob',25.4,0.9,'cubic-bezier(.7,0,.2,1)')}"></div>
+  <div style="position:relative;display:flex;flex-direction:column">
+    <div class="h1" style="font-size:118px">${words('Book your',25.7,0.12)}<br>${words('*asbestos survey',25.95,0.12)}<br>${words('today.',26.25)}</div>
+    <div class="h3" style="margin-top:36px;color:var(--muted);font-size:54px">${words('Safe. Compliant. Certain.',26.6,0.13)}</div>
+    <div class="btn" style="margin-top:56px;font-size:58px;padding:34px 56px;animation:${A('pop',26.9,0.5,'cubic-bezier(.3,1.4,.5,1)')}, pulse 1.1s ease-in-out 27.9s 2 both">Get a free quote →</div>
+    <div class="contacts">
+      ${contacts.map(([ic,txt],i)=>`<div class="ct" ${st(A('slideInR',27.3+i*0.2,0.6,'cubic-bezier(.2,1,.3,1)'))}>
+        <svg viewBox="0 0 100 100"><g fill="none" stroke="#FF7A1A" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">${ic}</g></svg>
+        <span>${txt}</span></div>`).join('')}
+    </div>
+  </div>`);
+
+// typewriter driven by time
+const typed = document.getElementById('typed');
+function setTypewriter(t){
+  const t0 = 22.4, cps = 28;
+  const n = Math.max(0, Math.min(law.length, Math.floor((t-t0)*cps)));
+  typed.textContent = law.slice(0,n);
+}
+// deterministic frame seek
+const anims = () => document.getAnimations();
+document.getAnimations().forEach(a=>a.pause());
+window.seek = (t)=>{
+  for(const a of anims()){ a.pause(); a.currentTime = t*1000; }
+  setTypewriter(t);
+};
+// live preview when opened directly in a browser
+if(!navigator.webdriver){
+  const t0 = performance.now();
+  (function loop(){ const t=((performance.now()-t0)/1000)%30; seek(t); requestAnimationFrame(loop); })();
+}
+</script>
+</body>
+</html>
